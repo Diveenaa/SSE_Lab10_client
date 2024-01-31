@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form</title>
+</head>
+<body>
+
+    <h1>Search Form</h1>
+
+    <form action="/form_query" method="post" id="searchForm">
+        <label for="searchType">Search By:</label>
+        <select id="searchType" name="searchType">
+            <option value="genre">Genre</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="min_year">Year</option>
+            <option value="min_id">ID</option>
+        </select>
+
+        <label for="searchInput">Enter Search:</label>
+        <input type="text" id="searchInput" name="searchInput" placeholder="Enter your search term">
+
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>
