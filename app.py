@@ -64,8 +64,7 @@ def filter_books(genre=None, id=None, title=None, year=None,author=None):
         return resulting_books
     
     else:
-        return "Error"
-        #return request_books()
+        return request_books()
 
 @app.route('/form_query', methods = ["POST"])
 def get_form_input():
