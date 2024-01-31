@@ -21,9 +21,12 @@ def request_books():
         books = response.json()
         return books
 
-def filter_books(genre=None, id=None, title=None, year=None,author=None):
-    books = request_books()
-    resulting_books = books = books["books"]
+def filter_books(books=None, genre=None, id=None, title=None, year=None,author=None):
+    if books == None:
+        books = request_books()["books"]
+   
+    resulting_books = books
+
     if id:
         resulting_books = [book for book in resulting_books if int(id) <= int(book['id'])]
 
@@ -42,14 +45,16 @@ def filter_books(genre=None, id=None, title=None, year=None,author=None):
     return resulting_books
 
 @app.route('/books')
-def filter_books_route():
-    genre = request.args.get('genre')
-    book_id = request.args.get('min_id')
-    title = request.args.get('title')
-    year = request.args.get('min_year')
-    author = request.args.get('author')
+def filter_books_route(genre=None, id=None, title=None, year=None,author=None):
+    queries = [genre, id, title, year, author]
+    if all(query is None for query in queries):
+        genre = request.args.get('genre')
+        id = request.args.get('min_id')
+        title = request.args.get('title')
+        year = request.args.get('min_year')
+        author = request.args.get('author')
 
-    resulting_books = filter_books(genre, book_id, title, year, author)
+    resulting_books = filter_books(genre=genre, id=id, title=title, year=year, author=author)
 
     if len(resulting_books) == 0:
         return "No books found"
@@ -60,17 +65,15 @@ def filter_books_route():
 def get_form_input():
     query = request.form.get('searchType')
     text_input = request.form.get('searchInput')
-    print(query)
-    print(text_input)
     if query == 'genre':
-        return filter_books(genre=text_input)
+        return filter_books_route(genre=text_input)
     if query == 'min_id':
-        return filter_books(id=text_input)
+        return filter_books_route(id=text_input)
     if query == 'min_year':
-        return filter_books(year=text_input)
+        return filter_books_route(year=text_input)
     if query == 'author':
-        return filter_books(author=text_input)
+        return filter_books_route(author=text_input)
     if query == 'title':
-        return filter_books(title=text_input)
+        return filter_books_route(title=text_input)
     else:
-        return filter_books()
+        return filter_books_route()
